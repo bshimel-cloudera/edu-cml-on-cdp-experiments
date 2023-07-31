@@ -1,23 +1,25 @@
 import sys
-import cdsw
+import mlflow
 
-args = len(sys.argv) - 1  
-sum = 0
-x = 1
+mlflow.set_experiment("Add It Up")
+mlflow.start_run()
 
-while (args >= x): 
-    print ("Argument %i: %s" % (x, sys.argv[x]))
-    sum = sum + int(sys.argv[x])
-    x = x + 1
+params = [int(number) for number in sys.argv[1:]]
+count = len(params)  
+total = sum(params)
     
 with open("result.txt", "w") as output_file:
-    output_file.write(f"Input: {sys.argv[1:]},")
-    output_file.write(f"Sum: {sum}")
+    output_file.write(f"Input: {params},")
+    output_file.write(f"Count: {count},")
+    output_file.write(f"Sum: {total}\n")
     output_file.close()
 
-cdsw.track_metric("Count", args)
-cdsw.track_metric("Sum", sum)
+mlflow.log_param("Input", params)
+mlflow.log_metric("Count", count)
+mlflow.log_metric("Sum", total)
 
-cdsw.track_file("result.txt")
+mlflow.log_artifact("result.txt")
 
-print ("Sum of the numbers is: %i." % sum)
+print ("Sum of the numbers is: %i." % total)
+
+mlflow.end_run()
