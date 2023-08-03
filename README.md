@@ -2,4 +2,4 @@
 
 This is a simple project to demonstrate experiment tracking in CML on CDP.
 
-VERSION: g543c655
+VERSION: 1.0.1
